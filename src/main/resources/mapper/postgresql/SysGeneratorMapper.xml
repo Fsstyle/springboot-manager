@@ -11,7 +11,7 @@
         select pt.tablename AS tableName, pd.description AS tableComment, now() AS createTime
         from pg_class pc
             join  pg_tables pt on pc.relname = pt.tablename
-            left join pg_description pd on pc.oid = pd.objoid
+            left join pg_description pd on pc.oid = pd.objoid and pd.objsubid = 0
         where pt.schemaname = "current_schema"()
             <if test="vo.tableName != null and vo.tableName != ''">
                 and pt.tablename LIKE concat('%',#{vo.tableName},'%')
@@ -24,17 +24,14 @@
         select pt.tablename AS tableName, pd.description AS tableComment, now() AS createTime
         from pg_class pc
             join  pg_tables pt on pc.relname = pt.tablename
-            left join pg_description pd on pc.oid = pd.objoid
+            left join pg_description pd on pc.oid = pd.objoid  and pd.objsubid = 0
         where pt.schemaname = "current_schema"()
             and pt.tablename = #{tableName}
 	</select>
 
     <select id="queryColumns" resultType="map">
-		select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra
-		from information_schema.columns
- 			where table_name = #{tableName} and table_schema = (select database()) order by ordinal_position
 
-        SELECT col.column_name,
+        SELECT col.column_name as columnName,
                (case when udt_name = 'int4' then 'int' when udt_name = 'int8' then 'bigint' else udt_name end) as dataType,
                d.description                                                                                      columnComment,
                CASE WHEN length(B.attname) > 0 THEN 'PRI' ELSE '' END AS columnKey,

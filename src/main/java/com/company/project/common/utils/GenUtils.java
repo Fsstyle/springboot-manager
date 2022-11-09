@@ -53,8 +53,8 @@ public class GenUtils {
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName(table.get("tableName"));
-        tableEntity.setComments(table.get("tableComment"));
+        tableEntity.setTableName(table.get("tablename"));
+        tableEntity.setComments(table.get("tablecomment"));
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), config.getStringArray("tablePrefix"));
         tableEntity.setClassName(className);
@@ -65,9 +65,9 @@ public class GenUtils {
         List<ColumnEntity> columsList = new ArrayList<>();
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
-            columnEntity.setColumnName(column.get("columnName"));
-            columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(column.get("columnComment"));
+            columnEntity.setColumnName(column.get("columnname"));
+            columnEntity.setDataType(column.get("datatype"));
+            columnEntity.setComments(column.get("columncomment"));
             columnEntity.setExtra(column.get("extra"));
 
             //列名转换成Java属性名
@@ -82,7 +82,7 @@ public class GenUtils {
                 hasBigDecimal = true;
             }
             //是否主键
-            if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
+            if ("PRI".equalsIgnoreCase(column.get("columnkey")) && tableEntity.getPk() == null) {
                 tableEntity.setPk(columnEntity);
             }
 
