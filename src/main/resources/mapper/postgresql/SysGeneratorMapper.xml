@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.mapper.GeneratorMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, table_name, menu_name, pid, gen_time
+    </sql>
+    <!-- 获取列表 -->
+    <select id="selectAllTables" resultType="com.company.project.entity.SysGenerator">
+        select pt.tablename AS tableName, pd.description AS tableComment, now() AS createTime
+        from pg_class pc
+            join  pg_tables pt on pc.relname = pt.tablename
+            left join pg_description pd on pc.oid = pd.objoid
+        where pt.schemaname = "current_schema"()
+            <if test="vo.tableName != null and vo.tableName != ''">
+                and pt.tablename LIKE concat('%',#{vo.tableName},'%')
+            </if>
+        ORDER BY tablename DESC
+    </select>
+
+
+    <select id="queryTable" resultType="map">
+        select pt.tablename AS tableName, pd.description AS tableComment, now() AS createTime
+        from pg_class pc
+            join  pg_tables pt on pc.relname = pt.tablename
+            left join pg_description pd on pc.oid = pd.objoid
+        where pt.schemaname = "current_schema"()
+            and pt.tablename = #{tableName}
+	</select>
+
+    <select id="queryColumns" resultType="map">
+		select column_name columnName, data_type dataType, column_comment columnComment, column_key columnKey, extra
+		from information_schema.columns
+ 			where table_name = #{tableName} and table_schema = (select database()) order by ordinal_position
+
+        SELECT col.column_name,
+               (case when udt_name = 'int4' then 'int' when udt_name = 'int8' then 'bigint' else udt_name end) as dataType,
+               d.description                                                                                      columnComment,
+               CASE WHEN length(B.attname) > 0 THEN 'PRI' ELSE '' END AS columnKey,
+               ''                                                                                                as extra
+        FROM information_schema.columns col
+                 JOIN pg_class c ON c.relname = col.table_name
+                 LEFT JOIN pg_description d ON d.objoid = c.oid AND d.objsubid = col.ordinal_position
+                 LEFT JOIN (SELECT pg_attribute.attname
+                            FROM pg_index,
+                                 pg_class,
+                                 pg_attribute
+                            WHERE pg_class.oid = #{tableName} :: regclass
+             AND pg_index.indrelid = pg_class.oid
+             AND pg_attribute.attrelid = pg_class.oid
+             AND pg_attribute.attnum = ANY (pg_index.indkey)) B ON col.column_name = b.attname
+        WHERE col.table_schema = "current_schema"()
+          and col.table_name = #{tableName}
+        order by ordinal_position;
+	</select>
+</mapper>
