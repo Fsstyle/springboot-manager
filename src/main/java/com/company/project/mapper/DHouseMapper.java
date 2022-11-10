@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 
  * @author wenbin
  * @email *****@mail.com
- * @date 2022-11-09 16:48:55
+ * @date 2022-11-10 10:52:14
  */
 public interface DHouseMapper extends BaseMapper<DHouseEntity> {
 	

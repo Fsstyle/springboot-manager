@@ -16,7 +16,7 @@ import lombok.Data;
  *
  * @author wenbin
  * @email *****@mail.com
- * @date 2022-11-09 16:48:55
+ * @date 2022-11-10 10:52:14
  */
 @Data
 @TableName("d_house")
@@ -24,7 +24,7 @@ public class DHouseEntity extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * $column.comments
+	 * ID
 	 */
 	@TableId("house_id")
 	private Integer houseId;
@@ -36,43 +36,43 @@ public class DHouseEntity extends BaseEntity implements Serializable {
 	private String houseNo;
 
 	/**
-	 * $column.comments
+	 * 楼栋号
 	 */
 	@TableField("block_no")
 	private String blockNo;
 
 	/**
-	 * $column.comments
+	 * 业主
 	 */
 	@TableField("buyer_name")
 	private String buyerName;
 
 	/**
-	 * $column.comments
+	 * 状态
 	 */
 	@TableField("status")
 	private String status;
 
 	/**
-	 * $column.comments
+	 * 购买时间
 	 */
 	@TableField("buy_time")
 	private Date buyTime;
 
 	/**
-	 * $column.comments
+	 * 创建时间
 	 */
 	@TableField("create_time")
 	private Date createTime;
 
 	/**
-	 * $column.comments
+	 * 更新时间
 	 */
 	@TableField("update_time")
 	private Date updateTime;
 
 	/**
-	 * $column.comments
+	 * 业主电话
 	 */
 	@TableField("buyer_phone")
 	private String buyerPhone;

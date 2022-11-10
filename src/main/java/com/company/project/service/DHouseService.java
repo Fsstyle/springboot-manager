@@ -8,7 +8,7 @@ import com.company.project.entity.DHouseEntity;
  *
  * @author wenbin
  * @email *****@mail.com
- * @date 2022-11-09 16:48:55
+ * @date 2022-11-10 10:52:14
  */
 public interface DHouseService extends IService<DHouseEntity> {
 
